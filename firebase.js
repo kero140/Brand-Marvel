@@ -1,6 +1,4 @@
-// BRAND MARVEL — Firebase configuration
-// Replace ONLY the values below with your Firebase Web App config.
-// Do not put your admin password in this file.
+// BRAND MARVEL — Firebase Web SDK
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
@@ -8,16 +6,16 @@ import { getDatabase } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-
 import { getStorage } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-storage.js";
 
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.firebasestorage.app",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyAjs2Z_16aRc4IQoSlFM-ctzSDcqzg2NvU",
+  authDomain: "brand-marvel.firebaseapp.com",
+  databaseURL: "https://brand-marvel-default-rtdb.firebaseio.com",
+  projectId: "brand-marvel",
+  storageBucket: "brand-marvel.firebasestorage.app",
+  messagingSenderId: "537130978355",
+  appId: "1:537130978355:web:79c6d88856dfcddbb4a746"
 };
 
-export const firebaseReady = !Object.values(firebaseConfig).some(v => String(v).startsWith("YOUR_"));
+export const firebaseReady = true;
 
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
