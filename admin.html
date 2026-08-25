@@ -1,6 +1,54 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Brand Marvel — Admin</title><link rel="stylesheet" href="css/style.css"></head>
-<body><header class="topbar"><div class="brand">BRAND <span>MARVEL</span></div><a href="index.html">العودة للموقع</a></header>
-<main class="container"><h1>لوحة المدير</h1><p>النسخة الحالية هي واجهة أولية. ربط Firebase سيجعل الإضافة والتعديل والحذف محفوظًا أونلاين.</p>
-<div class="modal-card" style="margin:20px 0;max-width:none"><h2>التحكم في المنتجات</h2><p>إضافة منتج • تعديل السعر • الصورة • المقاس • اللون • القسم • العروض • القطع الفورية</p>
-<button class="primary" onclick="alert('هنربط لوحة التحكم بقاعدة البيانات في الخطوة التالية')">إضافة منتج</button></div></main></body></html>
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BRAND MARVEL — Admin</title><link rel="stylesheet" href="style.css">
+<style>
+.admin{max-width:1200px;margin:auto;padding:25px 5%}.admin-nav{display:flex;gap:8px;overflow:auto;margin:20px 0}.admin-nav button{border:1px solid #eee;background:#fff;border-radius:12px;padding:10px 14px;white-space:nowrap}.panel{border:1px solid #eee;border-radius:20px;padding:20px;margin-bottom:20px}.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.form-grid .full{grid-column:1/-1}.form-grid input,.form-grid select,.form-grid textarea{width:100%;padding:12px;border:1px solid #eee;border-radius:12px}.admin-table{width:100%;border-collapse:collapse}.admin-table th,.admin-table td{padding:10px;border-bottom:1px solid #eee;text-align:right}.danger{background:#7d2222!important}.notice{padding:14px;border-radius:12px;background:#fff0f4;margin:12px 0}.login{max-width:440px;margin:10vh auto;padding:25px}.login input{width:100%;padding:13px;margin:8px 0;border:1px solid #eee;border-radius:12px}
+@media(max-width:700px){.form-grid{grid-template-columns:1fr}.admin-table{font-size:12px}.admin-table th:nth-child(3),.admin-table td:nth-child(3){display:none}}
+</style>
+</head>
+<body>
+<header class="topbar"><a class="brand" href="index.html"><span>BRAND</span> MARVEL</a><a class="cart-btn" href="index.html">المتجر</a></header>
+
+<main class="admin">
+<section id="loginPanel" class="panel login">
+<span class="eyebrow">BRAND MARVEL ADMIN</span><h1>تسجيل الدخول</h1>
+<p class="muted">استخدم بريد الأدمن الذي أنشأته في Firebase Authentication.</p>
+<form id="loginForm"><input id="email" type="email" required placeholder="Admin Email"><input id="password" type="password" required placeholder="Password"><button class="primary-btn full">دخول</button></form>
+<div id="loginError" class="notice hidden"></div>
+</section>
+
+<section id="dashboard" class="hidden">
+<div class="admin-nav">
+<button data-panel="products">المنتجات</button><button data-panel="categories">الأقسام</button><button data-panel="shipping">الشحن</button><button data-panel="orders">الطلبات</button><button data-panel="settings">الصفحة الرئيسية</button><button id="logoutBtn">خروج</button>
+</div>
+
+<div id="productsPanel" class="panel">
+<div style="display:flex;justify-content:space-between;gap:10px;align-items:center"><h2>إدارة المنتجات</h2><button id="newProductBtn" class="primary-btn">+ إضافة منتج</button></div>
+<form id="productForm" class="form-grid hidden">
+<input name="id" type="hidden"><input name="nameAr" required placeholder="اسم المنتج بالعربي"><input name="nameEn" required placeholder="Product name English">
+<textarea name="descAr" placeholder="الوصف بالعربي"></textarea><textarea name="descEn" placeholder="Description English"></textarea>
+<input name="price" type="number" required placeholder="السعر"><input name="oldPrice" type="number" placeholder="السعر القديم">
+<input name="category" placeholder="القسم ID"><input name="images" placeholder="روابط الصور مفصولة بفاصلة">
+<input name="sizes" placeholder="المقاسات مفصولة بفاصلة"><input name="colors" placeholder="الألوان مفصولة بفاصلة">
+<input name="variants" placeholder="الأشكال/Variants مفصولة بفاصلة"><input name="stock" type="number" required placeholder="المخزون">
+<label><input name="offer" type="checkbox"> عرض</label><label><input name="shein" type="checkbox"> SHEIN</label>
+<label><input name="instant" type="checkbox"> قطعة فورية</label><label><input name="active" type="checkbox" checked> متاح</label>
+<input name="order" type="number" placeholder="الترتيب">
+<div class="full"><button class="primary-btn" type="submit">حفظ المنتج</button><button id="cancelProduct" class="cart-btn" type="button">إلغاء</button></div>
+</form>
+<div id="productsList"></div>
+</div>
+
+<div id="categoriesPanel" class="panel hidden"><h2>الأقسام</h2><form id="catForm" class="form-grid"><input name="id" required placeholder="ID مثل dresses"><input name="nameAr" required placeholder="الاسم بالعربي"><input name="nameEn" required placeholder="English name"><input name="order" type="number" placeholder="الترتيب"><button class="primary-btn full">إضافة/تعديل قسم</button></form><div id="catsList"></div></div>
+
+<div id="shippingPanel" class="panel hidden"><h2>الشحن</h2><form id="shipForm" class="form-grid"><input name="id" required placeholder="ID"><input name="name" required placeholder="المحافظة"><input name="price" type="number" required placeholder="سعر الشحن"><label><input name="active" type="checkbox" checked> مفعل</label><button class="primary-btn full">حفظ الشحن</button></form><div id="shipList"></div></div>
+
+<div id="ordersPanel" class="panel hidden"><h2>الطلبات</h2><div id="ordersList"></div></div>
+
+<div id="settingsPanel" class="panel hidden"><h2>إعدادات الصفحة الرئيسية</h2><form id="settingsForm" class="form-grid"><input name="heroTitleAr" placeholder="Hero عربي"><input name="heroTitleEn" placeholder="Hero English"><input name="heroTextAr" placeholder="الوصف عربي"><input name="heroTextEn" placeholder="Description English"><input name="shippingTextAr" placeholder="الشحن عربي"><input name="shippingTextEn" placeholder="Shipping English"><button class="primary-btn full">حفظ الإعدادات</button></form></div>
+</section>
+</main>
+<script type="module" src="admin.js"></script>
+</body></html>

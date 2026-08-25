@@ -1,62 +1,105 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Brand Marvel</title>
-<link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#f6cbd8">
+  <meta name="description" content="BRAND MARVEL — ملابس وإكسسوارات وقطع فورية">
+  <title>BRAND MARVEL</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header class="topbar">
-  <div class="brand">BRAND <span>MARVEL</span></div>
-  <button class="cart-btn" onclick="openCart()">🛒 السلة <b id="cartCount">0</b></button>
-</header>
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="BRAND MARVEL">
+      <span>BRAND</span> MARVEL
+    </a>
+    <div class="header-actions">
+      <button id="langBtn" class="icon-btn" type="button">EN</button>
+      <button id="cartBtn" class="cart-btn" type="button">🛍️ <span data-i18n="cart">السلة</span><b id="cartCount">0</b></button>
+    </div>
+  </header>
 
-<section class="hero">
-  <div>
-    <p class="eyebrow">BRAND MARVEL</p>
-    <h1>اختاري إطلالتك<br>بكل أناقة ✨</h1>
-    <p>ملابس • إكسسوارات • SHEIN • قطع فورية</p>
-    <a href="#products" class="primary">تسوقي الآن</a>
-  </div>
-</section>
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow">BRAND MARVEL</span>
+        <h1 id="heroTitle">أناقتك تبدأ من هنا ✨</h1>
+        <p id="heroText">ملابس • إكسسوارات • SHEIN • قطع فورية</p>
+        <button id="shopBtn" class="primary-btn" type="button">تسوقي الآن</button>
+      </div>
+    </section>
 
-<div class="shipping">🚚 شحن لجميع المحافظات</div>
+    <div class="shipping-note">🚚 <span id="shippingText">شحن لجميع المحافظات</span></div>
 
-<nav class="categories">
-  <button class="active" onclick="filterProducts('all',this)">الكل</button>
-  <button onclick="filterProducts('clothes',this)">ملابس</button>
-  <button onclick="filterProducts('accessories',this)">إكسسوارات</button>
-  <button onclick="filterProducts('shein',this)">SHEIN</button>
-  <button onclick="filterProducts('instant',this)">⚡ القطع الفورية</button>
-  <button onclick="filterProducts('offers',this)">🔥 عروض</button>
-</nav>
+    <section class="toolbar" id="shop">
+      <div class="search-wrap">
+        <span>⌕</span>
+        <input id="searchInput" type="search" placeholder="ابحثي عن منتج..." aria-label="البحث">
+      </div>
+      <div id="categories" class="categories"></div>
+    </section>
 
-<main id="products" class="container">
-  <div class="section-head">
-    <div><p class="eyebrow">NEW COLLECTION</p><h2>منتجاتنا</h2></div>
-    <span id="productCount"></span>
-  </div>
-  <div id="productGrid" class="grid"></div>
-</main>
+    <section class="section-head">
+      <div>
+        <span class="eyebrow">MARVEL COLLECTION</span>
+        <h2 id="sectionTitle">كل المنتجات</h2>
+      </div>
+      <span id="resultCount" class="muted"></span>
+    </section>
 
-<div id="cartModal" class="modal">
-  <div class="modal-card">
-    <button class="close" onclick="closeCart()">×</button>
-    <h2>🛒 سلة المشتريات</h2>
-    <div id="cartItems"></div>
-    <div class="total">الإجمالي: <b id="cartTotal">0</b> جنيه</div>
-    <div class="checkout">
-      <input id="customerName" placeholder="الاسم">
-      <input id="customerPhone" placeholder="رقم الهاتف">
-      <textarea id="customerAddress" placeholder="العنوان بالتفصيل"></textarea>
-      <textarea id="customerNotes" placeholder="ملاحظات (اختياري)"></textarea>
-      <button class="whatsapp" onclick="checkout()">تأكيد الطلب عبر واتساب 💚</button>
+    <section id="productsGrid" class="products-grid"></section>
+    <div id="emptyState" class="empty hidden">
+      <div>♡</div><h3>لا توجد منتجات</h3><p>جربي قسمًا آخر أو غيّري كلمة البحث.</p>
+    </div>
+  </main>
+
+  <button id="whatsappFloat" class="whatsapp-float" type="button" aria-label="WhatsApp">◔</button>
+
+  <div id="productModal" class="modal hidden" aria-hidden="true">
+    <div class="modal-card">
+      <button class="modal-close" data-close="productModal">×</button>
+      <div id="productModalBody"></div>
     </div>
   </div>
-</div>
 
-<footer>© 2026 Brand Marvel — جميع الحقوق محفوظة</footer>
-<script src="js/app.js"></script>
+  <aside id="cartDrawer" class="drawer" aria-hidden="true">
+    <div class="drawer-head"><h2 data-i18n="cart">السلة</h2><button class="modal-close" data-close="cartDrawer">×</button></div>
+    <div id="cartItems" class="cart-items"></div>
+    <div class="cart-total"><span data-i18n="productsTotal">إجمالي المنتجات</span><strong id="cartSubtotal">0 جنيه</strong></div>
+    <button id="checkoutBtn" class="primary-btn full" type="button">إتمام الطلب</button>
+  </aside>
+
+  <div id="checkoutModal" class="modal hidden" aria-hidden="true">
+    <div class="modal-card checkout-card">
+      <button class="modal-close" data-close="checkoutModal">×</button>
+      <span class="eyebrow">ORDER</span>
+      <h2>تأكيد الطلب</h2>
+      <form id="checkoutForm">
+        <input name="name" required placeholder="الاسم">
+        <input name="phone" required inputmode="tel" placeholder="رقم الهاتف">
+        <input name="governorate" required placeholder="المحافظة">
+        <input name="area" placeholder="المنطقة">
+        <input name="address" required placeholder="العنوان">
+        <input name="landmark" placeholder="علامة مميزة للعنوان">
+        <select name="payment" required>
+          <option value="">طريقة الدفع</option>
+          <option>الدفع عند الاستلام</option>
+          <option>Orange Cash</option>
+        </select>
+        <textarea name="notes" rows="3" placeholder="ملاحظات"></textarea>
+        <div id="shippingPreview" class="checkout-summary"></div>
+        <button class="primary-btn full" type="submit">تأكيد الطلب عبر WhatsApp</button>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <strong>BRAND MARVEL</strong>
+    <p>أناقتك تبدأ من هنا ✨</p>
+    <a href="https://www.facebook.com/share/g/1FK5buGPtm/" target="_blank" rel="noopener">Facebook</a>
+    <a href="admin.html">Admin</a>
+  </footer>
+
+  <script type="module" src="app.js"></script>
 </body>
 </html>
