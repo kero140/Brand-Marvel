@@ -1,71 +1,26 @@
 # BRAND MARVEL
 
-متجر Mobile First يعمل على GitHub Pages، والطلبات تُرسل إلى WhatsApp.
+## مهم جدًا قبل رفع الموقع
+النسخة الأصلية التي أرسلتها كانت تحتوي على `YOUR_API_KEY` و`YOUR_PROJECT_ID` داخل `firebase.js`، لذلك صفحة Admin لا يمكنها تسجيل الدخول إلى Firebase. إنشاء مستخدم في Firebase وحده لا يكفي؛ يجب ربط الموقع نفسه بمشروع Firebase.
 
-## 1) Firebase
-أنشئ مشروع Firebase مجاني، ثم:
-- أضف Web App.
-- فعّل Authentication > Email/Password.
-- فعّل Realtime Database.
-- فعّل Storage إذا كنت ستخزن الصور داخله.
-- انسخ Firebase Web Config إلى `firebase.js`.
+### 1) اربط الموقع بـFirebase
+Firebase Console → Project settings → Your apps → Web app → Config.
+انسخ كائن `firebaseConfig` كاملًا والصقه مكان القيم الموجودة في `firebase.js`. لا تضع كلمة مرور الأدمن في الملف.
 
-**مهم:** لا تضع كلمة مرور الأدمن داخل أي ملف JavaScript.
+### 2) Authentication
+فعّل: Authentication → Sign-in method → Email/Password.
+ثم أنشئ مستخدم الأدمن بنفس البريد وكلمة المرور التي تريدها.
 
-أنشئ مستخدم الأدمن من Firebase Authentication بالبريد الذي تختاره وكلمة المرور التي تختارها.
+### 3) Realtime Database
+أنشئ Realtime Database. البنية المستخدمة: `products`, `categories`, `shipping`, `orders`, `settings`.
 
-## 2) Realtime Database
-البنية المقترحة:
-- `products`
-- `categories`
-- `shipping`
-- `orders`
-- `settings`
+### 4) Security Rules
+استخدم قواعد تسمح للزائر بقراءة المنتجات والإعدادات العامة، وتسمح للمستخدم الموثق بالكتابة. قبل الإطلاق العام يفضل تقييد الكتابة إلى UID الأدمن فقط.
 
-## 3) Security Rules
-استخدم Authentication للأدمن. مثال مبدئي يحتاج إلى تخصيص أكثر قبل الإطلاق:
+### 5) GitHub Pages
+ارفع محتويات مجلد `Brand-Marvel` إلى Root في Repository، ثم Settings → Pages → Deploy from a branch → main → /root.
 
-```json
-{
-  "rules": {
-    ".read": true,
-    "products": {
-      ".write": "auth != null"
-    },
-    "categories": {
-      ".write": "auth != null"
-    },
-    "shipping": {
-      ".write": "auth != null"
-    },
-    "settings": {
-      ".write": "auth != null"
-    },
-    "orders": {
-      ".write": true,
-      ".read": "auth != null"
-    }
-  }
-}
-```
+### 6) Admin
+افتح `admin.html` من نفس رابط GitHub Pages، ثم سجّل الدخول ببريد وكلمة مرور Firebase Authentication.
 
-للاستخدام الحقيقي، الأفضل تقييد الكتابة بحساب أدمن محدد عبر custom claims أو قائمة UID مسموحة. لا تعتبر القواعد أعلاه إعدادًا أمنيًا نهائيًا.
-
-## 4) GitHub Pages
-ارفع الملفات الموجودة في Root إلى Repository ثم:
-Settings > Pages > Deploy from a branch > main > /root > Save
-
-## 5) الصور
-النسخة الحالية تدعم روابط صور المنتجات من لوحة الأدمن. يمكن تطوير رفع الصور مباشرة إلى Firebase Storage بعد ربط المشروع، مع مراعاة حدود الـFree Tier.
-
-## 6) WhatsApp
-رقم الطلبات الحالي:
-+201286560161
-
-Orange Cash:
-01286560161
-
-الموقع لا يعتبر Orange Cash مدفوعًا تلقائيًا؛ التأكيد يدوي.
-
-## 7) ملاحظة مهمة
-صفحة `admin.html` لا تعمل على Firebase فعليًا إلا بعد وضع Firebase config وإنشاء حساب Admin في Authentication. كلمة المرور التي وردت في مواصفات المشروع لم يتم تضمينها في الكود عمدًا.
+**لا ترسل كلمة مرور Firebase هنا.** إذا أردت مني ربط النسخة نهائيًا، أرسل فقط `firebaseConfig` الخاص بتطبيق الويب (apiKey/authDomain/databaseURL/projectId/messagingSenderId/appId)، وهو ليس كلمة مرور.
